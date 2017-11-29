@@ -1,7 +1,10 @@
 from bs4 import BeautifulSoup
 import urllib.request
 
-file = open('./Data/LinksByYear.txt', 'r')
+
+##Used for the "Old" (pre 2014) format
+
+file = open('./Data/missingOldFormat.txt', 'r')
 LinkSoup = BeautifulSoup(file, 'lxml')
 file.close()
 
@@ -15,8 +18,7 @@ for link in LinkSoup.find_all('a'):
         divTag = tableSoup.find_all("div", {"id": "content"})
         divSoup = BeautifulSoup(str(divTag), 'lxml')
 
-
-        table = divSoup.find('tbody')
+        table = divSoup.findAll('tbody')[1]
         tableRows = table.find_all('tr')
 
         filename = tempLink[24:31]
