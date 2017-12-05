@@ -3,8 +3,8 @@ import urllib.request
 
 
 # old is mostly stuff before 2014, new is after. Lots of special one off cases the functions were messed with for.
-file = open('./Data/missingOldFormat.txt', 'r')
-#file = open('./Data/missing2014format.txt', 'r')
+# file = open('./Data/missingOldFormat.txt', 'r')
+# file = open('./Data/missing2014format.txt', 'r')
 LinkSoup = BeautifulSoup(file, 'lxml')
 file.close()
 
