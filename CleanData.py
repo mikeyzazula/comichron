@@ -1,7 +1,7 @@
 import ast
 import os
 import sqlite3
-
+import re
 
 
 def create_table():
@@ -9,6 +9,8 @@ def create_table():
 
 
 def add_data(rank, title, issue, publisher, units, year, month):
+    if issue == '':
+        issue = 0
     cursor.execute("INSERT INTO comicTable(rank, title, issue, publisher, units, year, month) VALUES (?, ?, ?, ?, ?, ? , ?)",
                    (rank, title, issue, publisher, units, year, month))
 
@@ -26,15 +28,14 @@ def parse_to_db():
                 if 'trade paperback' in str(lit_line[1]).lower(): # we need to dodge the paperbacks in the old format, which are in the same table as the comics
                     break
                 else:
-                    #if str(lit_line[0]) != '' and str(lit_line[0]) != '\n': # dodging empty data
                     if str(lit_line[0]).isdigit():  # dodging empty data
 
                         if len(lit_line) == 5:
                             add_data(int(lit_line[0]), str(lit_line[1]), 0, lit_line[3], int(lit_line[4].replace(',', '')), year, month)
                         else:
-                            add_data(int(lit_line[0]), str(lit_line[1]), lit_line[2], lit_line[4], int(lit_line[5].replace(',', '')), year, month)
+                            add_data(int(lit_line[0]), str(lit_line[1]), re.sub('[^0-9]', '', lit_line[2]), lit_line[4], int(lit_line[5].replace(',', '')), year, month)
             else:
-                add_data(int(lit_line[0]), str(lit_line[2]), lit_line[3], lit_line[5], int(lit_line[6].replace(',', '')), year, month)
+                add_data(int(lit_line[0]), str(lit_line[2]), re.sub('[^0-9]', '', lit_line[3]), lit_line[5], int(lit_line[6].replace(',', '')), year, month)
         open_file.close()
 
 connection = sqlite3.connect('ComicChron.db')

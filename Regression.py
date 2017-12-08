@@ -18,7 +18,7 @@ def main():
 
 
 def read_db(keyword):
-    statement = "SELECT rank, units FROM comicTable WHERE title LIKE '%" + keyword + "%' ORDER BY units DESC"
+    statement = "SELECT rank, units, publisher, month FROM comicTable WHERE title LIKE '%" + keyword + "%' ORDER BY units DESC"
     print(statement)
     cursor.execute(statement)
     df = DataFrame(cursor.fetchall())
